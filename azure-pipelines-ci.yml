@@ -3,9 +3,6 @@ trigger:
     include:
       - master
 
-variables:
-  GIT_TAG: ""
-
 pool:
   name: "linuxpool"
 
