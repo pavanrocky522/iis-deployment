@@ -8,6 +8,10 @@ resources:
       branches:
         include:
           - master
+  
+variables:
+  - name: GIT_TAG
+    value: $(GIT_TAG)
 
 stages:
 - stage: Deploy
