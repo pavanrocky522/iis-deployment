@@ -44,8 +44,8 @@ stages:
     - script: |
         echo "Fetching the latest Git tag..."
         git fetch --tags
-        export GIT_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-        echo "##vso[task.setvariable variable=GIT_TAG]$(GIT_TAG)"
+        export TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+        echo "##vso[task.setvariable variable=GIT_TAG]$TAG"
       displayName: "Retrieve Git Tag"
     - task: DotNetCoreCLI@2
       inputs:
