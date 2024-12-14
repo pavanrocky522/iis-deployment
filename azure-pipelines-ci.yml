@@ -42,6 +42,15 @@ stages:
         echo "##vso[task.setvariable variable=GIT_TAG]$TAG"
       displayName: "Retrieve Git Tag"
       name: RetrieveGitTag
+
+    - script: |
+        echo "Updating GIT_TAG in git-variable-group"
+        # Update the variable in the variable group using Azure CLI
+        az pipelines variable-group variable update \
+          --group-id a699c1e7-88a7-600e-92f0-d00a2d4f1052 \
+          --name GIT_TAG \
+          --value $(GIT_TAG)
+      displayName: "Update GIT_TAG in Variable Group"
     - task: DotNetCoreCLI@2
       inputs:
         command: "publish"
