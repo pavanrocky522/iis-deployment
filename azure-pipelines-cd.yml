@@ -9,10 +9,6 @@ resources:
         include:
           - master
   
-variables:
-  - name: GIT_TAG
-    value: $(GIT_TAG)
-
 stages:
 - stage: Deploy
   jobs:
@@ -28,7 +24,7 @@ stages:
           - download: "CI"
             name: "DownloadBuildArtifacts"
             displayName: Download Build Artifacts
-            artifact: "$(GIT_TAG)"
+            artifact: "$(CI.SetTag.GIT_TAG)"
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
