@@ -44,6 +44,7 @@ stages:
     displayName: Publish Build Artifact
     dependsOn: Publish
     steps:
+    - checkout: none
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: "$(Build.ArtifactStagingDirectory)"
