@@ -24,8 +24,8 @@ stages:
           - download: "CI"
             name: "DownloadBuildArtifacts"
             displayName: Download Build Artifacts
-            artifact: "$(GIT_TAG)"
+            artifact: "app-$(GIT_TAG)"
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
-              Package: '$(Pipeline.Workspace)/CI/$(GIT_TAG)/iis-app.zip'
+              Package: '$(Pipeline.Workspace)/CI/app-$(GIT_TAG)/iis-app.zip'
