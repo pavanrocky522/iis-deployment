@@ -28,4 +28,4 @@ stages:
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
-              Package: '$(Pipeline.Workspace)\CI\iis-app-v1.0.zip'
+              Package: '$(Pipeline.Workspace)\CI\iis-app-v1.0\iis-app.zip'
