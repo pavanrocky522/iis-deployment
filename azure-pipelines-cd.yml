@@ -24,7 +24,7 @@ stages:
           - download: "CI"
             name: "DownloadBuildArtifacts"
             displayName: Download Build Artifacts
-            artifact: "$(CI.SetTag.GIT_TAG)"
+            artifact: "$(GIT_TAG)"
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
