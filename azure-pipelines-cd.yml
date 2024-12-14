@@ -1,0 +1,31 @@
+trigger: none
+
+resources:
+  pipelines:
+  - pipeline: CI
+    source: iis-ci
+    trigger:
+      branches:
+        include:
+          - master
+
+stages:
+- stage: Deploy
+  jobs:
+  - deployment: DeployWebsite
+    displayName: Deploy Website
+    environment: dev.dev-vm
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: none
+
+          - download: "CI"
+            name: "DownloadBuildArtifacts"
+            displayName: Download Build Artifacts
+            artifact: iis-app-v1.0
+          - task: IISWebAppDeploymentOnMachineGroup@0
+            inputs:
+              WebSiteName: 'sampleapp'
+              Package: '$(Pipeline.Workspace)\CI\*.zip'
