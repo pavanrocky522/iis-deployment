@@ -19,12 +19,13 @@ stages:
       runOnce:
         deploy:
           steps:
+
           - checkout: none
 
           - download: "CI"
             name: "DownloadBuildArtifacts"
             displayName: Download Build Artifacts
-            artifact: "app-$(resources.pipelines.CI.outputs['RetrieveGitTag.GIT_TAG'])"
+            artifact: "app-$(resources.pipelines.CI.outputs['Publish.SetOutputVariable.GIT_TAG'])"
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
