@@ -3,6 +3,9 @@ trigger:
     include:
       - master
 
+variables:
+  GIT_TAG: ""
+
 pool:
   name: "linuxpool"
 
@@ -37,12 +40,18 @@ stages:
   - job: Publish
     displayName: Publish
     steps:
+
+    - script: |
+        echo "Fetching the latest Git tag..."
+        git fetch --tags
+        export TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+        echo "##vso[task.setvariable variable=GIT_TAG]$TAG"
+      displayName: "Retrieve Git Tag"
     - task: DotNetCoreCLI@2
       inputs:
         command: "publish"
         projects: "**/*.csproj"
         arguments: "--configuration Release --output $(Build.ArtifactStagingDirectory)"
-
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: "$(Build.ArtifactStagingDirectory)"
