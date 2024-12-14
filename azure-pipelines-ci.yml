@@ -51,4 +51,9 @@ stages:
       inputs:
         PathtoPublish: "$(Build.ArtifactStagingDirectory)"
         ArtifactName: "app-$(GIT_TAG)"
+
+    # Output the Git Tag so it can be used in the CD pipeline
+    - script: |
+        echo "##vso[task.setvariable variable=GIT_TAG;isOutput=true]$(GIT_TAG)"
+      name: SetOutputVariable
       
