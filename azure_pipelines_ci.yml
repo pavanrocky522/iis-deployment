@@ -39,6 +39,13 @@ stages:
         command: "publish"
         projects: "**/*.csproj"
         arguments: "--configuration Release --output $(Build.ArtifactStagingDirectory)"
+
+  - job: PublishBuildArtifact
+    displayName: Publish Build Artifact
+    dependsOn: Publish
+    steps:
+    - checkout: none
+    
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: "$(Build.ArtifactStagingDirectory)"
