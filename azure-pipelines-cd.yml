@@ -8,7 +8,10 @@ resources:
       branches:
         include:
           - master
-  
+
+variables:
+  - group: git-variable-group  # Reference to the variable group
+
 stages:
 - stage: Deploy
   jobs:
@@ -25,7 +28,7 @@ stages:
           - download: "CI"
             name: "DownloadBuildArtifacts"
             displayName: Download Build Artifacts
-            artifact: "app-$(resources.pipelines.CI.outputs['Publish.SetOutputVariable.GIT_TAG'])"
+            artifact: "app-$(GIT_TAG)"
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
