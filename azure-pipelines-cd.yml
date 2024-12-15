@@ -32,11 +32,6 @@ stages:
             name: "DownloadBuildArtifacts"
             displayName: Download Build Artifacts
             artifact: "app-v1.0"
-          
-          - script: |
-              echo "Listing downloaded artifacts..."
-              ls -R $(Pipeline.Workspace)/CI
-            displayName: Debug Artifact Download
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
