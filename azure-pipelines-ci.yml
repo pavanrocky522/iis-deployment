@@ -60,11 +60,13 @@ stages:
       displayName: "Update GIT_TAG in Variable Group"
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
     - task: DotNetCoreCLI@2
       inputs:
         command: "publish"
         projects: "**/*.csproj"
         arguments: "--configuration Release --output $(Build.ArtifactStagingDirectory)"
+        
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: "$(Build.ArtifactStagingDirectory)"
