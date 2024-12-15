@@ -46,9 +46,9 @@ stages:
     - script: |
         echo "Updating GIT_TAG in git-variable-group"
         
-        # Log in to Azure DevOps using SYSTEM_ACCESSTOKEN
-        echo "Logging into Azure DevOps..."
-        az devops login --token $(System.AccessToken)
+        # # Log in to Azure DevOps using SYSTEM_ACCESSTOKEN
+        # echo "Logging into Azure DevOps..."
+        # az devops login --token $(System.AccessToken)
         
         # Now update the variable in the variable group
         az pipelines variable-group variable update \
