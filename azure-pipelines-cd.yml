@@ -25,9 +25,6 @@ stages:
 
           - checkout: none
 
-          - script: |
-              echo "GIT_TAG: $(GIT_TAG)"
-
           - task: DownloadBuildArtifacts@1
             inputs:
               buildType: 'current'
@@ -38,4 +35,4 @@ stages:
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
-              Package: '$(Pipeline.Workspace)/CI/app-v1.0/iis-app.zip'
+              Package: '$(Pipeline.Workspace)/CI/$(ARTIFACT_NAME)-$(GIT_TAG)/iis-app.zip'
