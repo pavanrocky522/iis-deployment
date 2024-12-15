@@ -35,26 +35,25 @@ stages:
     displayName: Publish
     steps:
 
+    # Fetch the latest Git tag
     - script: |
         echo "Fetching the latest Git tag..."
         git fetch --tags
         export TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-        echo "##vso[task.setvariable variable=GIT_TAG]$TAG"
         echo "Successfully retrieved Git tag: $TAG"
+        echo "##vso[task.setvariable variable=GIT_TAG]$TAG"
       displayName: "Retrieve Git Tag"
       name: RetrieveGitTag
 
+    # Update the GIT_TAG in the Variable Group
     - script: |
         echo "Updating GIT_TAG in git-variable-group"
-        
-        # Update the variable in the variable group
         az pipelines variable-group variable update \
           --org https://dev.azure.com/pavanrocky \
           --project iis-deployment \
           --group-id 1 \
           --name GIT_TAG \
           --value $(GIT_TAG)
-
       displayName: "Update GIT_TAG in Variable Group"
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
