@@ -67,11 +67,9 @@ stages:
         PathtoPublish: "$(Build.ArtifactStagingDirectory)"
         ArtifactName: "app-$(GIT_TAG)"
 
-     # Update the GIT_TAG in the Variable Group
+      # Optionally, ensure that the GIT_TAG variable is set in the pipeline context (if needed)
     - script: |
-        echo "##vso[task.setvariable variable=GIT_TAG;isOutput=true]$(GIT_TAG)"
         echo "##vso[task.setvariable variable=GIT_TAG;isSecret=true]$(GIT_TAG)"
-      displayName: "Set GIT_TAG in Variable Group"
-      name: SetVariableInGroup
+      displayName: "Set GIT_TAG as Secret in Pipeline"
       condition: succeeded()
       
