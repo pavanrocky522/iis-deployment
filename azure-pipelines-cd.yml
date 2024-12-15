@@ -31,7 +31,7 @@ stages:
           - download: "CI"
             name: "DownloadBuildArtifacts"
             displayName: Download Build Artifacts
-            artifact: "app-$(GIT_TAG)"
+            artifact: "$(ARTIFACT_NAME)-$(GIT_TAG)"
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
