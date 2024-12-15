@@ -31,7 +31,7 @@ stages:
           - download: "CI"
             name: "DownloadBuildArtifacts"
             displayName: Download Build Artifacts
-            artifact: "app-$(GIT_TAG)"
+            artifact: "app-v1.0"
           
           - script: |
               echo "Listing downloaded artifacts..."
@@ -40,4 +40,4 @@ stages:
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
-              Package: '$(Pipeline.Workspace)/CI/app-$(GIT_TAG)/iis-app.zip'
+              Package: '$(Pipeline.Workspace)/CI/app-v1.0/iis-app.zip'
