@@ -9,6 +9,9 @@ resources:
         include:
           - master
 
+variables:
+  - group: git-variable-group  # Reference to the variable group
+
 stages:
 - stage: Deploy
   jobs:
@@ -19,13 +22,17 @@ stages:
       runOnce:
         deploy:
           steps:
+
           - checkout: none
+
+          - script: |
+              echo "GIT_TAG: $(GIT_TAG)"
 
           - download: "CI"
             name: "DownloadBuildArtifacts"
             displayName: Download Build Artifacts
-            artifact: iis-app-v1.0
+            artifact: "app-$(GIT_TAG)"
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
-              Package: '$(Pipeline.Workspace)\CI\*.zip'
+              Package: '$(Pipeline.Workspace)/CI/app-v1.0/iis-app.zip'
