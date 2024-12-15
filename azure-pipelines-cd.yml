@@ -22,26 +22,10 @@ stages:
       runOnce:
         deploy:
           steps:
-<<<<<<< HEAD
 
           - checkout: none
-
-          - script: |
-              echo "GIT_TAG: $(GIT_TAG)"
-
-          - download: "CI"
-            name: "DownloadBuildArtifacts"
-            displayName: Download Build Artifacts
-            artifact: "app-$(GIT_TAG)"
-          - task: IISWebAppDeploymentOnMachineGroup@0
-            inputs:
-              WebSiteName: 'sampleapp'
-              Package: '$(Pipeline.Workspace)/CI/app-v1.0/iis-app.zip'
-=======
-
-          - checkout: none
+          
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
               Package: '$(Pipeline.Workspace)/CI/$(ARTIFACT_NAME)-$(GIT_TAG)/iis-app.zip'
->>>>>>> 6b802f4b885f0ed6ff0d1d7fc4a44a9a562eccb2
