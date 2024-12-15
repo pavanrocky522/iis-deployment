@@ -27,7 +27,8 @@ stages:
 
           - script: |
               echo "GIT_TAG: $(GIT_TAG)"
-
+              
+          - download: none
           - task: DownloadBuildArtifacts@1
             inputs:
               buildType: 'current'
