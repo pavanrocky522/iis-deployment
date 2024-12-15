@@ -28,10 +28,13 @@ stages:
           - script: |
               echo "GIT_TAG: $(GIT_TAG)"
 
-          - download: "CI"
-            name: "DownloadBuildArtifacts"
-            displayName: Download Build Artifacts
-            artifact: "$(ARTIFACT_NAME)-$(GIT_TAG)"
+          - task: DownloadBuildArtifacts@1
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: '$(ARTIFACT_NAME)-$(GIT_TAG)'
+              downloadPath: '$(System.ArtifactsDirectory)'
+                    
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
