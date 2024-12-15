@@ -25,10 +25,18 @@ stages:
 
           - checkout: none
 
+          - script: |
+              echo "GIT_TAG: $(GIT_TAG)"
+
           - download: "CI"
             name: "DownloadBuildArtifacts"
             displayName: Download Build Artifacts
             artifact: "app-$(GIT_TAG)"
+          
+          - script: |
+              echo "Listing downloaded artifacts..."
+              ls -R $(Pipeline.Workspace)/CI
+            displayName: Debug Artifact Download
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
