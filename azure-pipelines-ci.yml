@@ -3,6 +3,9 @@ trigger: none
 pool:
   name: "linuxpool"
 
+variables:
+  - group: git-variable-group  # Reference to the variable group
+
 stages:
 
 - stage: Build
@@ -65,7 +68,7 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: "$(Build.ArtifactStagingDirectory)"
-        ArtifactName: "app-$(GIT_TAG)"
+        ArtifactName: "$(ARTIFACT_NAME)-$(GIT_TAG)"
 
       # Optionally, ensure that the GIT_TAG variable is set in the pipeline context (if needed)
     - script: |
