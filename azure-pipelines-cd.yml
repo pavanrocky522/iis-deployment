@@ -24,14 +24,6 @@ stages:
           steps:
 
           - checkout: none
-
-          - task: DownloadBuildArtifacts@1
-            inputs:
-              buildType: 'current'
-              downloadType: 'single'
-              artifactName: '$(ARTIFACT_NAME)-$(GIT_TAG)'
-              downloadPath: '$(System.ArtifactsDirectory)'
-                    
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
