@@ -1,4 +1,9 @@
-trigger: none
+trigger: none  # Disable CI trigger if you don't want it to run on regular pushes
+
+pr:
+  branches:
+    include:
+      - master  # Only trigger the pipeline for PRs targeting the master branch
 
 pool:
   name: "linuxpool"
@@ -66,7 +71,7 @@ stages:
         command: "publish"
         projects: "**/*.csproj"
         arguments: "--configuration Release --output $(Build.ArtifactStagingDirectory)"
-        
+
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: "$(Build.ArtifactStagingDirectory)"
