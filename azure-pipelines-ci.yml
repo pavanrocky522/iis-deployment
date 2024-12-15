@@ -1,30 +1,78 @@
 trigger: none
 
-resources:
-  pipelines:
-  - pipeline: CI
-    source: iis-ci
-    trigger:
-      branches:
-        include:
-          - master
+pool:
+  name: "linuxpool"
 
 variables:
   - group: git-variable-group  # Reference to the variable group
 
 stages:
-- stage: Deploy
-  jobs:
-  - deployment: DeployWebsite
-    displayName: Deploy Website
-    environment: dev.dev-vm
-    strategy:
-      runOnce:
-        deploy:
-          steps:
 
-          - checkout: none
-          - task: IISWebAppDeploymentOnMachineGroup@0
-            inputs:
-              WebSiteName: 'sampleapp'
-              Package: '$(Pipeline.Workspace)/CI/$(ARTIFACT_NAME)-$(GIT_TAG)/iis-app.zip'
+- stage: Build
+  displayName: Build
+  jobs:
+
+  - job: Restore
+    displayName: Restore
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: restore
+        projects: "**/*.csproj"
+
+  - job: Build
+    displayName: Build
+    dependsOn: Restore
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: "build"
+        projects: "**/*.csproj"
+        arguments: "--configuration Release"
+
+- stage: Publish
+  displayName: Publish
+  jobs:
+
+  - job: Publish
+    displayName: Publish
+    steps:
+
+    # Fetch the latest Git tag
+    - script: |
+        echo "Fetching the latest Git tag..."
+        git fetch --tags
+        export TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+        echo "Successfully retrieved Git tag: $TAG"
+        echo "##vso[task.setvariable variable=GIT_TAG]$TAG"
+      displayName: "Retrieve Git Tag"
+      name: RetrieveGitTag
+
+    # Update the GIT_TAG in the Variable Group
+    - script: |
+        echo "Updating GIT_TAG in git-variable-group"
+        az pipelines variable-group variable update \
+          --org https://dev.azure.com/pavanrocky \
+          --project iis-deployment \
+          --group-id 1 \
+          --name GIT_TAG \
+          --value $(GIT_TAG)
+      displayName: "Update GIT_TAG in Variable Group"
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: "publish"
+        projects: "**/*.csproj"
+        arguments: "--configuration Release --output $(Build.ArtifactStagingDirectory)"
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+        ArtifactName: "$(ARTIFACT_NAME)-$(GIT_TAG)"
+
+      # Optionally, ensure that the GIT_TAG variable is set in the pipeline context (if needed)
+    - script: |
+        echo "##vso[task.setvariable variable=GIT_TAG;isSecret=true]$(GIT_TAG)"
+      displayName: "Set GIT_TAG as Secret in Pipeline"
+      condition: succeeded()
+      
