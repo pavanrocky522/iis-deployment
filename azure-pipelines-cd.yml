@@ -4,10 +4,7 @@ resources:
   pipelines:
   - pipeline: CI
     source: iis-ci
-    trigger:
-      branches:
-        include:
-          - master
+    trigger: none
 
 variables:
   - group: git-variable-group  # Reference to the variable group
