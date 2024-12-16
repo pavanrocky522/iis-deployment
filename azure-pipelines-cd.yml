@@ -27,12 +27,12 @@ stages:
               IISDeploymentType: 'IISWebsite'
               ActionIISWebsite: 'StopWebsite'
               StartStopWebsiteName: 'sampleapp'
-              
+
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp'
               Package: '$(Pipeline.Workspace)/CI/$(ARTIFACT_NAME)-$(GIT_TAG)/iis-app.zip'
-
+              TakeAppOfflineFlag: true
           - task: IISWebAppManagementOnMachineGroup@0
             inputs:
               IISDeploymentType: 'IISWebsite'
