@@ -1,17 +1,17 @@
 trigger: none
 
-# resources:
-#   pipelines:
-#   - pipeline: CI
-#     source: iis-ci
-#     trigger:
-#       branches:
-#         include:
-#           - master
+resources:
+  pipelines:
+  - pipeline: CI
+    source: iis-ci
+    trigger:
+      branches:
+        include:
+          - master
 
 
 variables:
-  - group: git-variable-group  # Reference to the variable group
+  - group: git-variable-group
 
 stages:
 - stage: Deploy
@@ -37,7 +37,7 @@ stages:
               WebSiteName: 'sampleapp_v1'
               Package: '$(Pipeline.Workspace)/CI/myArtifact/iis-app.zip'
               TakeAppOfflineFlag: true
-              
+
           - task: IISWebAppManagementOnMachineGroup@0
             inputs:
               IISDeploymentType: 'IISWebsite'

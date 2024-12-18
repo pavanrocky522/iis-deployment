@@ -1,16 +1,16 @@
 trigger: none
 
-resources:
-  pipelines:
-  - pipeline: CI
-    source: iis-ci
-    trigger:
-      branches:
-        include:
-          - master
+# resources:
+#   pipelines:
+#   - pipeline: CI
+#     source: iis-ci
+#     trigger:
+#       branches:
+#         include:
+#           - master
 
 variables:
-  - group: git-variable-group  # Reference to the variable group
+  - group: git-variable-group
 
 stages:
 - stage: DeployToStaging
@@ -102,7 +102,7 @@ stages:
 
                 # Track the previous binding information
                 $prodHostBinding = "*:80:$prodHost"
-                $stagingIPBinding = "$stagingIP:80:"
+                $stagingIPBinding = "*:80:"
 
                 # Rollback the bindings to previous state
                 Write-Host "Rolling back IIS bindings to previous state"
