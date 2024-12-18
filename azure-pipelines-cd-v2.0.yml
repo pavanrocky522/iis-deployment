@@ -25,17 +25,18 @@ stages:
           steps:
 
           - checkout: none
-          
-          # - task: IISWebAppManagementOnMachineGroup@0
-          #   inputs:
-          #     IISDeploymentType: 'IISWebsite'
-          #     ActionIISWebsite: 'StopWebsite'
-          #     StartStopWebsiteName: 'sampleapp_v2'
 
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp_v2'
               Package: '$(Pipeline.Workspace)/CI/myArtifact/iis-app.zip'
+
+          - task: IISWebAppManagementOnMachineGroup@0
+            inputs:
+              IISDeploymentType: 'IISWebsite'
+              ActionIISWebsite: 'StartWebsite'
+              StartStopWebsiteName: 'sampleapp_v2'
+
 
 - stage: SwapBindings
   displayName: 'Swap Staging to Production'

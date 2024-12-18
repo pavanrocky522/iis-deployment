@@ -37,6 +37,7 @@ stages:
               WebSiteName: 'sampleapp_v1'
               Package: '$(Pipeline.Workspace)/CI/myArtifact/iis-app.zip'
               TakeAppOfflineFlag: true
+              
           - task: IISWebAppManagementOnMachineGroup@0
             inputs:
               IISDeploymentType: 'IISWebsite'
