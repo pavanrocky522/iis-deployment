@@ -1,6 +1,4 @@
-trigger: none  # Disable CI trigger if you don't want it to run on regular pushes
-
-pr:
+trigger:  # Disable CI trigger if you don't want it to run on regular pushes
   branches:
     include:
       - master  # Only trigger the pipeline for PRs targeting the master branch
