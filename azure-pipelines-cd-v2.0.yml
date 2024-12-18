@@ -59,7 +59,7 @@ stages:
                 $prodSite = "sampleapp_v1"
                 $stagingSite = "sampleapp_v2"
                 $prodHost = "gunna.sreecharan.in"
-                $stagingIP = "*" # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
+                $stagingIP = "20.70.237.228" # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
 
                 # Remove production binding from the current production site
                 Remove-WebBinding -Name $prodSite -BindingInformation "*:80:$prodHost" -Protocol http
@@ -98,7 +98,7 @@ stages:
                 $prodSite = "sampleapp_v1"
                 $stagingSite = "sampleapp_v2"
                 $prodHost = "gunna.sreecharan.in"
-                $stagingIP = "*"  # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
+                $stagingIP = "20.70.237.228"  # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
 
                 # Track the previous binding information
                 $prodHostBinding = "*:80:$prodHost"
