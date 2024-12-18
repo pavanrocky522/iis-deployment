@@ -1,13 +1,13 @@
 trigger: none
 
-resources:
-  pipelines:
-  - pipeline: CI
-    source: iis-ci
-    trigger:
-      branches:
-        include:
-          - master
+# resources:
+#   pipelines:
+#   - pipeline: CI
+#     source: iis-ci
+#     trigger:
+#       branches:
+#         include:
+#           - master
 
 
 variables:
