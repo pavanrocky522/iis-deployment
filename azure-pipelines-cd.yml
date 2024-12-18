@@ -34,7 +34,7 @@ stages:
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
               WebSiteName: 'sampleapp_v1'
-              Package: '$(Pipeline.Workspace)/CI/$(ARTIFACT_NAME)-$(GIT_TAG)/iis-app.zip'
+              Package: '$(Pipeline.Workspace)/CI/myArtifact/iis-app.zip'
               TakeAppOfflineFlag: true
           - task: IISWebAppManagementOnMachineGroup@0
             inputs:
