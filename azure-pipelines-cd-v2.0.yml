@@ -41,33 +41,37 @@ stages:
   displayName: 'Swap Staging to Production'
   dependsOn: DeployToStaging
   jobs:
-  - job: SwapBlueGreen
+  - deployment: SwapBlueGreen
     displayName: 'Swap IIS Bindings for Blue-Green Deployment'
-    steps:
-    - task: PowerShell@2
-      displayName: 'Swap IIS Bindings'
-      inputs:
-        targetType: 'inline'
-        script: |
-          Import-Module WebAdministration
+    environment: dev.dev-vm
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            displayName: 'Swap IIS Bindings'
+            inputs:
+              targetType: 'inline'
+              script: |
+                Import-Module WebAdministration
 
-          # Define site names and bindings
-          $prodSite = "sampleapp_v1"
-          $stagingSite = "sampleapp_v2"
-          $prodHost = "gunna.sreecharan.in"
-          $stagingIP = "*" # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
+                # Define site names and bindings
+                $prodSite = "sampleapp_v1"
+                $stagingSite = "sampleapp_v2"
+                $prodHost = "gunna.sreecharan.in"
+                $stagingIP = "*" # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
 
-          # Remove production binding from the current production site
-          Remove-WebBinding -Name $prodSite -BindingInformation "*:80:$prodHost" -Protocol http
+                # Remove production binding from the current production site
+                Remove-WebBinding -Name $prodSite -BindingInformation "*:80:$prodHost" -Protocol http
 
-          # Remove IP-based binding from the staging site
-          Remove-WebBinding -Name $stagingSite -BindingInformation "$stagingIP:80:" -Protocol http
+                # Remove IP-based binding from the staging site
+                Remove-WebBinding -Name $stagingSite -BindingInformation "$stagingIP:80:" -Protocol http
 
-          # Add production binding to the new site
-          New-WebBinding -Name $stagingSite -BindingInformation "*:80:$prodHost" -Protocol http
+                # Add production binding to the new site
+                New-WebBinding -Name $stagingSite -BindingInformation "*:80:$prodHost" -Protocol http
 
-          # Add IP-based binding back to the old production site
-          New-WebBinding -Name $prodSite -BindingInformation "$stagingIP:80:" -Protocol http
+                # Add IP-based binding back to the old production site
+                New-WebBinding -Name $prodSite -BindingInformation "$stagingIP:80:" -Protocol http
 
-          Write-Host "Binding swap complete: $prodHost -> $stagingSite and $stagingIP -> $prodSite"
+                Write-Host "Binding swap complete: $prodHost -> $stagingSite and $stagingIP -> $prodSite"
 
