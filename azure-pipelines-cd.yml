@@ -4,7 +4,10 @@ resources:
   pipelines:
   - pipeline: CI
     source: iis-ci
-    trigger: none
+    trigger:
+      branches:
+        include:
+          - master
 
 variables:
   - group: git-variable-group  # Reference to the variable group
@@ -30,11 +33,11 @@ stages:
 
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
-              WebSiteName: 'sampleapp'
+              WebSiteName: 'sampleapp_v1'
               Package: '$(Pipeline.Workspace)/CI/$(ARTIFACT_NAME)-$(GIT_TAG)/iis-app.zip'
               TakeAppOfflineFlag: true
           - task: IISWebAppManagementOnMachineGroup@0
             inputs:
               IISDeploymentType: 'IISWebsite'
               ActionIISWebsite: 'StartWebsite'
-              StartStopWebsiteName: 'sampleapp'
+              StartStopWebsiteName: 'sampleapp_v1'
