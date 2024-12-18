@@ -80,36 +80,39 @@ stages:
   dependsOn: SwapBindings
   condition: failed()
   jobs:
-  - job: RollbackBindings
+  - deployment: RollbackBindings
     displayName: "Rollback IIS Bindings"
     environment: dev.dev-vm
-    steps:
-    - task: PowerShell@2
-      displayName: 'Rollback IIS Bindings'
-      inputs:
-        targetType: 'inline'
-        script: |
-          Import-Module WebAdministration
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            displayName: 'Rollback IIS Bindings'
+            inputs:
+              targetType: 'inline'
+              script: |
+                Import-Module WebAdministration
 
-          # Define site names and bindings
-          $prodSite = "sampleapp_v1"
-          $stagingSite = "sampleapp_v2"
-          $prodHost = "gunna.sreecharan.in"
-          $stagingIP = "*"  # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
+                # Define site names and bindings
+                $prodSite = "sampleapp_v1"
+                $stagingSite = "sampleapp_v2"
+                $prodHost = "gunna.sreecharan.in"
+                $stagingIP = "*"  # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
 
-          # Track the previous binding information
-          $prodHostBinding = "*:80:$prodHost"
-          $stagingIPBinding = "$stagingIP:80:"
+                # Track the previous binding information
+                $prodHostBinding = "*:80:$prodHost"
+                $stagingIPBinding = "$stagingIP:80:"
 
-          # Rollback the bindings to previous state
-          Write-Host "Rolling back IIS bindings to previous state"
-          
-          # Remove current bindings
-          Remove-WebBinding -Name $prodSite -BindingInformation "*:80:$prodHost" -Protocol http
-          Remove-WebBinding -Name $stagingSite -BindingInformation "$stagingIP:80:" -Protocol http
+                # Rollback the bindings to previous state
+                Write-Host "Rolling back IIS bindings to previous state"
+                
+                # Remove current bindings
+                Remove-WebBinding -Name $prodSite -BindingInformation "*:80:$prodHost" -Protocol http
+                Remove-WebBinding -Name $stagingSite -BindingInformation "$stagingIP:80:" -Protocol http
 
-          # Add original bindings back
-          New-WebBinding -Name $stagingSite -BindingInformation "*:80:$prodHost" -Protocol http
-          New-WebBinding -Name $prodSite -BindingInformation "$stagingIP:80:" -Protocol http
+                # Add original bindings back
+                New-WebBinding -Name $stagingSite -BindingInformation "*:80:$prodHost" -Protocol http
+                New-WebBinding -Name $prodSite -BindingInformation "$stagingIP:80:" -Protocol http
 
-          Write-Host "Rollback complete"
+                Write-Host "Rollback complete"
