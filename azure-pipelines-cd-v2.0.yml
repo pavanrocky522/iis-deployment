@@ -59,7 +59,7 @@ stages:
                 $prodSite = "sampleapp_v1"
                 $stagingSite = "sampleapp_v2"
                 $prodHost = "gunna.sreecharan.in"
-                $stagingIP = "20.70.237.228" # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
+                $stagingIP = "*" # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
 
                 # Remove production binding from the current production site
                 Remove-WebBinding -Name $prodSite -BindingInformation "*:80:$prodHost" -Protocol http
@@ -68,10 +68,10 @@ stages:
                 Remove-WebBinding -Name $stagingSite -BindingInformation "$stagingIP:80:" -Protocol http
 
                 # Add production binding to the new site
-                New-WebBinding -Name $stagingSite -BindingInformation "*:80:$prodHost" -Protocol http
+                New-IISSiteBinding -Name $stagingSite -BindingInformation "*:80:$prodHost" -Protocol http
 
                 # Add IP-based binding back to the old production site
-                New-WebBinding -Name $prodSite -BindingInformation "$stagingIP:80:" -Protocol http
+                New-IISSiteBinding -Name $prodSite -BindingInformation "$stagingIP:80:" -Protocol http
 
                 Write-Host "Binding swap complete: $prodHost -> $stagingSite and $stagingIP -> $prodSite"
 
@@ -98,7 +98,7 @@ stages:
                 $prodSite = "sampleapp_v1"
                 $stagingSite = "sampleapp_v2"
                 $prodHost = "gunna.sreecharan.in"
-                $stagingIP = "20.70.237.228"  # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
+                $stagingIP = "*"  # Replace with the specific IP if the staging site uses a particular IP (e.g., "192.168.1.10")
 
                 # Track the previous binding information
                 $prodHostBinding = "*:80:$prodHost"
@@ -112,7 +112,7 @@ stages:
                 Remove-WebBinding -Name $stagingSite -BindingInformation "$stagingIP:80:" -Protocol http
 
                 # Add original bindings back
-                New-WebBinding -Name $stagingSite -BindingInformation "*:80:$prodHost" -Protocol http
-                New-WebBinding -Name $prodSite -BindingInformation "$stagingIP:80:" -Protocol http
+                New-IISSiteBinding -Name $stagingSite -BindingInformation "*:80:$prodHost" -Protocol http
+                New-IISSiteBinding -Name $prodSite -BindingInformation "$stagingIP:80:" -Protocol http
 
                 Write-Host "Rollback complete"
