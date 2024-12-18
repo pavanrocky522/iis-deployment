@@ -29,7 +29,7 @@ stages:
             inputs:
               IISDeploymentType: 'IISWebsite'
               ActionIISWebsite: 'StopWebsite'
-              StartStopWebsiteName: 'sampleapp'
+              StartStopWebsiteName: 'sampleapp_v1'
 
           - task: IISWebAppDeploymentOnMachineGroup@0
             inputs:
